@@ -1,0 +1,176 @@
+!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>黄色チャット風 掲示板</title>
+  <style>
+    body { font-family: sans-serif; padding: 1rem; background: #fffbe6; }
+    #chat, #age-check { max-width: 500px; margin: auto; }
+    #messages { border: 1px solid #ccc; height: 300px; overflow-y: auto; background: #fff; padding: 0.5rem; }
+    #messages div { margin-bottom: 0.5rem; padding: 0.3rem; background: #f7f7f7; border-radius: 5px; }
+    input, button { font-size: 1rem; padding: 0.5rem; margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+
+<div id="age-check">
+  <h2>この掲示板は18歳以上限定です</h2>
+  <button onclick="enterSite()">はい（18歳以上です）</button>
+</div>
+
+<div id="chat" style="display:none;">
+  <h2>匿名掲示板（黄色チャット風）</h2>
+  <div id="messages"></div>
+  <input type="text" id="msgInput" placeholder="メッセージを入力" />
+  <button onclick="sendMessage()">投稿</button>
+</div>
+
+<!-- Firebase SDK 読み込み -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<script>
+ <!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>黄色チャット風 掲示板</title>
+  <style>
+    body { font-family: sans-serif; padding: 1rem; background: #fffbe6; }
+    #chat, #age-check { max-width: 500px; margin: auto; }
+    #messages { border: 1px solid #ccc; height: 300px; overflow-y: auto; background: #fff; padding: 0.5rem; }
+    #messages div { margin-bottom: 0.5rem; padding: 0.3rem; background: #f7f7f7; border-radius: 5px; }
+    input, button { font-size: 1rem; padding: 0.5rem; margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+
+<div id="age-check">
+  <h2>この掲示板は18歳以上限定です</h2>
+  <button onclick="enterSite()">はい（18歳以上です）</button>
+</div>
+
+<div id="chat" style="display:none;">
+  <h2>匿名掲示板（黄色チャット風）</h2>
+  <div id="messages"></div>
+  <input type="text" id="msgInput" placeholder="メッセージを入力" />
+  <button onclick="sendMessage()">投稿</button>
+</div>
+
+<!-- Firebase SDK 読み込み -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<script>
+  // 🔴 ここに自分のFirebase設定を貼り付けて！
+  const const firebaseConfig = {
+  apiKey: "AIzaSyDCEH6RjK6CqunbDOQqtXzf9q7Lcxd0XdE",
+  authDomain: "tokumeichat-49989.firebaseapp.com",
+  projectId: "tokumeichat-49989",
+  storageBucket: "tokumeichat-49989.firebasestorage.app",
+  messagingSenderId: "1049854482348",
+  appId: "1:1049854482348:web:d4cac8ef577c9325630c09",
+  measurementId: "G-RVNHYRXWZ0"
+}
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // 年齢確認
+  function enterSite() {
+    localStorage.setItem("isAdult", "true");
+    document.getElementById("age-check").style.display = "none";
+    document.getElementById("chat").style.display = "block";
+    loadMessages();
+  }
+
+  if (localStorage.getItem("isAdult") === "true") {
+    document.getElementById("age-check").style.display = "none";
+    document.getElementById("chat").style.display = "block";
+    loadMessages();
+  }
+
+  // メッセージ投稿
+  function sendMessage() {
+    const msg = document.getElementById("msgInput").value;
+    if (!msg.trim()) return;
+    db.collection("posts").add({
+      message: msg,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById("msgInput").value = "";
+  }
+
+  // メッセージ読み込み（リアルタイム）
+  function loadMessages() {
+    db.collection("posts")
+      .orderBy("timestamp", "desc")
+      .limit(50)
+      .onSnapshot(snapshot => {
+        const messages = document.getElementById("messages");
+        messages.innerHTML = "";
+        snapshot.docs.reverse().forEach(doc => {
+          const data = doc.data();
+          const div = document.createElement("div");
+          div.textContent = data.message || "(無内容)";
+          messages.appendChild(div);
+        });
+        messages.scrollTop = messages.scrollHeight;
+      });
+  }
+</script>
+
+</body>
+</html>
+
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // 年齢確認
+  function enterSite() {
+    localStorage.setItem("isAdult", "true");
+    document.getElementById("age-check").style.display = "none";
+    document.getElementById("chat").style.display = "block";
+    loadMessages();
+  }
+
+  if (localStorage.getItem("isAdult") === "true") {
+    document.getElementById("age-check").style.display = "none";
+    document.getElementById("chat").style.display = "block";
+    loadMessages();
+  }
+
+  // メッセージ投稿
+  function sendMessage() {
+    const msg = document.getElementById("msgInput").value;
+    if (!msg.trim()) return;
+    db.collection("posts").add({
+      message: msg,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById("msgInput").value = "";
+  }
+
+  // メッセージ読み込み（リアルタイム）
+  function loadMessages() {
+    db.collection("posts")
+      .orderBy("timestamp", "desc")
+      .limit(50)
+      .onSnapshot(snapshot => {
+        const messages = document.getElementById("messages");
+        messages.innerHTML = "";
+        snapshot.docs.reverse().forEach(doc => {
+          const data = doc.data();
+          const div = document.createElement("div");
+          div.textContent = data.message || "(無内容)";
+          messages.appendChild(div);
+        });
+        messages.scrollTop = messages.scrollHeight;
+      });
+  }
+</script>
+
+</body>
+</html>
