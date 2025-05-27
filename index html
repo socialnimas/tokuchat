@@ -62,8 +62,8 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
-  // 🔴 ここに自分のFirebase設定を貼り付けて！
-  const const firebaseConfig = {
+  
+sconst const firebaseConfig = {
   apiKey: "AIzaSyDCEH6RjK6CqunbDOQqtXzf9q7Lcxd0XdE",
   authDomain: "tokumeichat-49989.firebaseapp.com",
   projectId: "tokumeichat-49989",
