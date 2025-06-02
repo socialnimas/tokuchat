@@ -62,8 +62,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
-  
-sconst const firebaseConfig = {
+
   apiKey: "AIzaSyDCEH6RjK6CqunbDOQqtXzf9q7Lcxd0XdE",
   authDomain: "tokumeichat-49989.firebaseapp.com",
   projectId: "tokumeichat-49989",
@@ -71,7 +70,12 @@ sconst const firebaseConfig = {
   messagingSenderId: "1049854482348",
   appId: "1:1049854482348:web:d4cac8ef577c9325630c09",
   measurementId: "G-RVNHYRXWZ0"
-}
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
 
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
